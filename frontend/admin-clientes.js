@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const itemsPerPage = 10;
     let searchTimeout;
 
+    function formatarCPF(cpf) {
+        const cpfLimpo = String(cpf).replace(/\D/g, '').padStart(11, '0');
+        return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    function formatarCelular(celular) {
+        const celularLimpo = String(celular).replace(/\D/g, '').padStart(11, '0');
+        return celularLimpo.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+
     async function showMessage(message, type) {
         // Implementar uma função de mensagem se necessário
     }
@@ -57,16 +67,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             clientes.forEach(cliente => {
                 const row = clientTableBody.insertRow();
                 row.insertCell().textContent = cliente.nome;
-                row.insertCell().textContent = cliente.cpf;
-
-                row.insertCell().textContent = cliente.celular;
+                row.insertCell().textContent = formatarCPF(cliente.cpf);
+                row.insertCell().textContent = formatarCelular(cliente.celular);
                 row.insertCell().textContent = cliente.utilizado ? 'Sim' : 'Não';
 
                 row.addEventListener('click', () => {
                     modalDetails.innerHTML = `
                         <p><strong>Nome:</strong> ${cliente.nome}</p>
-                        <p><strong>CPF:</strong> ${cliente.cpf}</p>
-                        <p><strong>Celular:</strong> ${cliente.celular}</p>
+                        <p><strong>CPF:</strong> ${formatarCPF(cliente.cpf)}</p>
+                        <p><strong>Celular:</strong> ${formatarCelular(cliente.celular)}</p>
                         <p><strong>Nascimento:</strong> ${new Date(cliente.data_nascimento).toLocaleDateString('pt-BR')}</p>
                         <p><strong>Cadastrado Em:</strong> ${new Date(cliente.data_criacao).toLocaleString('pt-BR')}</p>
                         <p><strong>Utilizado:</strong> ${cliente.utilizado ? 'Sim' : 'Não'}</p>

@@ -204,13 +204,16 @@ button:hover {
     }
 
     .main-content {
-        margin-left: 0;
         width: 100%;
     }
     
     .hamburger-btn {
         display: block; /* Visível em mobile */
     }
+}
+
+.pagination{
+    margin-top: 10px;
 }
 
 /* Estilos do Modal */
@@ -241,4 +244,44 @@ button:hover {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+}
+/* Estilos da Tabela de Clientes */
+#client-table-container {
+    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#client-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove o espaçamento entre as bordas */
+    min-width: 600px; /* Largura mínima para evitar que a tabela fique muito espremida */
+}
+
+#client-table th,
+#client-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Impede a quebra de linha do conteúdo */
+}
+
+#client-table th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#client-table tbody tr:hover {
+    background-color: #f5f5f5; /* Efeito de hover para melhor usabilidade */
+    cursor: pointer;
+}
+
+#client-table td:first-child,
+#client-table th:first-child {
+    min-width: 200px; /* Garante um espaço mínimo para o nome */
+    width: auto; /* Permite que a coluna cresça conforme o conteúdo */
 }

@@ -3,7 +3,7 @@ from . import models, schemas
 import hashlib
 import uuid
 from datetime import datetime, timedelta
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from passlib.context import CryptContext
 import pytz
 
@@ -102,5 +102,14 @@ def resetar_clientes_utilizados(db: Session):
 def get_total_clientes_cadastrados(db: Session):
     return db.query(models.Cliente).count()
 
-def get_clientes(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Cliente).offset(skip).limit(limit).all()
+def get_clientes(db: Session, skip: int = 0, limit: int = 100, search: str = ""):
+    query = db.query(models.Cliente)
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            or_(
+                models.Cliente.nome.ilike(search_term),
+                models.Cliente.cpf.ilike(search_term)
+            )
+        )
+    return query.offset(skip).limit(limit).all()

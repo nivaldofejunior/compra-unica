@@ -9,6 +9,7 @@ import io
 import uuid # Adiciona a importação do módulo uuid
 from datetime import datetime
 import pytz
+from typing import Optional
 
 from . import models, schemas, crud
 from .database import engine, get_db
@@ -62,8 +63,9 @@ def resetar_utilizacao(db: Session = Depends(get_db)):
     return crud.resetar_clientes_utilizados(db)
 
 @app.get("/admin/clientes/", response_model=list[schemas.Cliente])
-def listar_clientes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    clientes = crud.get_clientes(db, skip=skip, limit=limit)
+@app.get("/admin/clientes/", response_model=list[schemas.Cliente])
+def listar_clientes(skip: int = 0, limit: int = 100, search: Optional[str] = None, db: Session = Depends(get_db)):
+    clientes = crud.get_clientes(db, skip=skip, limit=limit, search=search)
     return [schemas.Cliente.from_orm(c) for c in clientes]
 
 @app.get("/admin/clientes/total/", response_model=int)
