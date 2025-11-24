@@ -8,6 +8,12 @@ body {
     margin: 0;
 }
 
+/* Desfaz a centralização para as páginas de administração */
+body.admin-page {
+    display: block;
+    height: auto;
+}
+
 .container {
     background-color: #fff;
     padding: 2rem;
@@ -157,7 +163,7 @@ button:hover {
     background-color: #555;
 }
 
-.main-content {
+.admin-layout .main-content {
     margin-left: 250px;
     padding: 2rem;
     width: calc(100% - 250px);
@@ -203,7 +209,10 @@ button:hover {
         display: block;
     }
 
-    .main-content {
+    .main-content,
+    .admin-layout .main-content {
+        margin-left: 0;
+        margin-top: 50px;
         width: 100%;
     }
     
