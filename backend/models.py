@@ -1,8 +1,10 @@
-from sqlalchemy import Column, String, Boolean, DateTime, Date
+from sqlalchemy import Column, String, Boolean, DateTime, Date, Integer
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from datetime import datetime
 from .database import Base
+import secrets # Adiciona a importação de secrets
+from passlib.context import CryptContext # Para hash de senha
 
 class Cliente(Base):
     __tablename__ = "clientes"
@@ -16,3 +18,12 @@ class Cliente(Base):
     utilizado = Column(Boolean, default=False)
     data_criacao = Column(DateTime, default=datetime.utcnow)
     data_utilizacao = Column(DateTime, nullable=True)
+
+class Configuracao(Base):
+    __tablename__ = "configuracoes"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    titulo_promocao = Column(String, default="Promoção Pizza por R$ 0,25")
+    limite_clientes = Column(Integer, default=100)
+    senha_admin_hash = Column(String, unique=True) # Hash da senha de admin
+    data_ultima_atualizacao = Column(DateTime, default=datetime.utcnow)

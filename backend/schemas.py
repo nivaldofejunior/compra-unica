@@ -62,3 +62,22 @@ class Cliente(ClienteBase):
 
     class Config:
         from_attributes = True
+
+class ConfiguracaoBase(BaseModel):
+    titulo_promocao: str | None = None
+    limite_clientes: int | None = None
+    senha_admin: str | None = None # Adiciona o campo de senha
+
+class ConfiguracaoCreate(ConfiguracaoBase):
+    pass
+
+class ConfiguracaoUpdate(ConfiguracaoBase):
+    pass
+
+class Configuracao(ConfiguracaoBase):
+    id: uuid.UUID
+    senha_admin_hash: str # Adiciona o hash da senha de admin
+    data_ultima_atualizacao: datetime
+
+    class Config:
+        from_attributes = True

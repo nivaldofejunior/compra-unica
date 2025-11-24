@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultTitle = document.getElementById('result-title');
     const resultMessage = document.getElementById('result-message');
     const resultContainer = document.getElementById('result-container');
+    const backToAdminBtn = document.getElementById('back-to-admin-btn');
     
     const API_URL = ''; // URL Relativa para a API
     let scanning = false;
@@ -105,5 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener para o botão "Escanear Novamente"
     rescanBtn.addEventListener('click', () => {
         prepareForNewScan();
+    });
+
+    backToAdminBtn.addEventListener('click', () => {
+        window.location.href = 'admin.html';
     });
 });

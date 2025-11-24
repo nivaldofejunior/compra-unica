@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração da Promoção</title>
+    <link rel="stylesheet" href="styles.css?v=1.3">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .admin-container h1 {
+            text-align: center;
+            color: #d9534f;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .admin-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+        .admin-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .admin-buttons .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .admin-buttons .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .admin-buttons .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .admin-buttons .btn-danger:hover {
+            background-color: #c82333;
+        }
+        #message-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .client-list-section {
+            margin-top: 3rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+        }
+        .client-list-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        #client-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        #client-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #client-table th, #client-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        #client-table th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        #client-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .pagination button {
+            background-color: #6c757d;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .pagination button:hover:not(:disabled) {
+            background-color: #5a6268;
+        }
+        .pagination button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #total-clientes {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Administração da Promoção Vila da Pizza</h1>
+
+        <div id="message-container" class="hidden"></div>
+
+        <form id="config-form">
+            <input type="hidden" id="config-id">
+            <div class="form-group">
+                <label for="titulo_promocao">Título da Promoção:</label>
+                <input type="text" id="titulo_promocao" name="titulo_promocao" required>
+            </div>
+            <div class="form-group">
+                <label for="limite_clientes">Limite de Clientes:</label>
+                <input type="number" id="limite_clientes" name="limite_clientes" min="1" required>
+            </div>
+            <div class="admin-buttons">
+                <button type="submit" class="btn-primary">Salvar Configurações</button>
+                <button type="button" id="reset-clientes-btn" class="btn-danger">Resetar Clientes Utilizados</button>
+                <button type="button" id="go-to-validacao-btn" class="btn-primary">Ir para Validação</button>
+                <button type="button" id="logout-btn" class="btn-danger">Sair</button>
+            </div>
+        </form>
+
+        <div class="client-list-section">
+            <h2>Clientes Cadastrados</h2>
+            <p id="total-clientes">Total: 0</p>
+            <div id="client-table-container">
+                <table id="client-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Celular</th>
+                            <th>Nascimento</th>
+                            <th>Cadastrado Em</th>
+                            <th>Utilizado</th>
+                            <th>Utilizado Em</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Clientes serão carregados aqui -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="prev-page-btn" disabled>Anterior</button>
+                <span id="current-page">Página 1</span>
+                <button id="next-page-btn">Próxima</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Ao carregar a página, verifica se o admin está logado
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+    <script src="admin.js"></script>
+</body>
+</html>

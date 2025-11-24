@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login de Administração</title>
+    <link rel="stylesheet" href="styles.css?v=1.4">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 380px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .login-container h1 {
+            color: #d9534f;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .login-button {
+            background-color: #007bff;
+            color: white;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+        #login-error-msg {
+            color: #d9534f;
+            margin-top: 1.5rem;
+            font-weight: bold;
+            display: none; /* Esconde por padrão */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Acesso Administrativo</h1>
+        <div id="login-error-msg"></div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const passwordInput = document.getElementById('password');
+            const loginErrorMsg = document.getElementById('login-error-msg');
+
+            const API_BASE_URL = 'https://d5f8e8aecadb.ngrok-free.app'; // Será preenchida com a URL do ngrok ou domínio
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                loginErrorMsg.style.display = 'none';
+
+                const password = passwordInput.value;
+
+                try {
+                    const formBody = new URLSearchParams();
+                    formBody.append('username', 'admin'); // O FastAPI espera um username, mas não o usamos para a senha única.
+                    formBody.append('password', password);
+
+                    const response = await fetch(`${API_BASE_URL}/admin/login/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formBody.toString(),
+                    });
+
+                    if (response.ok) {
+                        sessionStorage.setItem('adminLoggedIn', 'true'); // Define o status de login
+                        window.location.href = 'admin.html'; // Redireciona para a página de administração
+                    } else {
+                        const errorData = await response.json();
+                        loginErrorMsg.textContent = errorData.detail || 'Senha incorreta.';
+                        loginErrorMsg.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Erro de login:', error);
+                    loginErrorMsg.textContent = 'Não foi possível conectar ao servidor de autenticação.';
+                    loginErrorMsg.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
