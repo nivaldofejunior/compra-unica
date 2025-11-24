@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Boolean, DateTime, Date, Integer
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from datetime import datetime
-from .database import Base
+from database import Base
 import secrets # Adiciona a importação de secrets
 from passlib.context import CryptContext # Para hash de senha
 import pytz # Importa a biblioteca pytz
