@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Clientes</title>
+    <link rel="stylesheet" href="styles.css?v=1.5">
+</head>
+<body>
+<body>
+    <button class="hamburger-btn">&#9776;</button>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2><span class="sidebar-text">Admin</span></h2>
+            <ul>
+                <li><a href="admin.html"><span class="sidebar-text">Configurações</span></a></li>
+                <li><a href="admin-clientes.html" class="active"><span class="sidebar-text">Clientes</span></a></li>
+                <li><a href="validar.html"><span class="sidebar-text">Validar QR Code</span></a></li>
+                <li><a href="#" id="logout-btn"><span class="sidebar-text">Sair</span></a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="client-list-section">
+                <h2>Clientes Cadastrados</h2>
+                <div class="form-group">
+                    <label for="search-client">Pesquisar Cliente (Nome ou CPF):</label>
+                    <input type="text" id="search-client" name="search-client">
+                </div>
+                <p id="total-clientes">Total: 0</p>
+                <div id="client-table-container">
+                    <table id="client-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Celular</th>
+                                <th>Utilizado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Clientes serão carregados aqui -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button id="prev-page-btn" disabled>Anterior</button>
+                    <span id="current-page">Página 1</span>
+                    <button id="next-page-btn">Próxima</button>
+                </div>
+                <div class="admin-buttons" style="margin-top: 2rem;">
+                    <button id="reset-clientes-btn" class="btn-danger">Resetar Clientes Utilizados</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="navigation.js"></script>
+    <script src="admin-clientes.js"></script>
+
+    <!-- Modal para detalhes do cliente -->
+    <div id="client-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Detalhes do Cliente</h2>
+            <div id="modal-client-details"></div>
+        </div>
+    </div>
+</body>
+</html>

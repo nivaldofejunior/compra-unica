@@ -8,6 +8,7 @@ services:
       POSTGRES_USER: pizzariauser
       POSTGRES_PASSWORD: pizzariapassword
       POSTGRES_DB: pizzariadb
+      TZ: America/Manaus # Define o fuso horário para Manaus (GMT-4)
     ports:
       - "5432:5432"
     volumes:
