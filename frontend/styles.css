@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #d9534f;
+}
+
+h1 {
+    color: #d9534f;
+    display: flex;
+    flex-direction: column; /* Coloca o preço abaixo do texto principal */
+    align-items: center;
+    gap: 0.25rem; /* Pequeno espaço entre as linhas */
+}
+
+h1 .price {
+    white-space: nowrap; /* Garante que o "R$ 0,25" nunca quebre a linha */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+label {
+    text-align: left;
+    font-weight: bold;
+}
+
+input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #5cb85c; /* Verde sucesso */
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+.hidden {
+    display: none;
+}
+
+#qrcode-container {
+    margin-top: 2rem;
+}
+
+#qrcode-img {
+    max-width: 200px;
+    margin: 1rem auto;
+    display: block;
+}
+
+#status-msg {
+    font-weight: bold;
+    color: #337ab7; /* Azul informativo */
+}
+
+#error-msg {
+    color: #d9534f;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+/* Media Query para Dispositivos Móveis */
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
+        margin: 1rem;
+        box-shadow: none;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 120px;
+        height: 120px;
+    }
+}

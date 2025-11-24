@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoção Vila da Pizza</title>
+    <link rel="stylesheet" href="styles.css?v=1.2">
+</head>
+<body>
+    <div class="container">
+        <img src="assets/logo.jpeg" alt="Logo Vila da Pizza" class="logo">
+        <h1><span>Promoção Pizza por</span> <span class="price">R$ 0,25</span></h1>
+        <p>Cadastre-se para garantir sua pizza pequena por um preço incrível!</p>
+        
+        <form id="cadastro-form">
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required>
+            
+            <label for="cpf">CPF:</label>
+            <input 
+                type="text" 
+                id="cpf" 
+                name="cpf" 
+                maxlength="14" 
+                inputmode="numeric"
+                autocomplete="off"
+                required
+            >
+            
+            <label for="celular">Celular (com DDD):</label>
+            <input 
+                type="text" 
+                id="celular" 
+                name="celular" 
+                maxlength="15" 
+                inputmode="numeric"
+                autocomplete="off"
+                required
+            >
+
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input 
+                type="text" 
+                id="data_nascimento" 
+                name="data_nascimento" 
+                maxlength="10" 
+                inputmode="numeric"
+                autocomplete="off"
+                required
+            >
+            
+            <button type="submit">Cadastrar e Gerar QR Code</button>
+        </form>
+        
+        <div id="qrcode-container" class="hidden">
+            <h2>Seu QR Code da Promoção!</h2>
+            <p>Apresente este QR Code no dia da promoção para validar.</p>
+            <img id="qrcode-img" src="" alt="QR Code">
+            <p id="status-msg"></p>
+        </div>
+
+        <div id="error-msg" class="hidden"></div>
+    </div>
+    
+    <script>
+        // Função geral para aplicar máscara
+        function aplicarMascara(input, func) {
+            input.addEventListener("input", () => {
+                input.value = func(input.value);
+            });
+        }
+
+        // CPF: xxx.xxx.xxx-xx
+        function mascaraCPF(v) {
+            v = v.replace(/\D/g, ""); 
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d{2})$/, "$1-$2");
+            return v;
+        }
+
+        // Celular com DDD: (xx) xxxxx-xxxx
+        function mascaraCelular(v) {
+            v = v.replace(/\D/g, "");
+            v = v.replace(/(\d{2})(\d)/, "($1) $2");
+            v = v.replace(/(\d{5})(\d)/, "$1-$2");
+            return v;
+        }
+
+        // Data de nascimento: dd/mm/yyyy
+        function mascaraData(v) {
+            v = v.replace(/\D/g, "");
+            v = v.replace(/(\d{2})(\d)/, "$1/$2");
+            v = v.replace(/(\d{2})(\d)/, "$1/$2");
+            v = v.replace(/(\d{4})\d+$/, "$1"); // impede ultrapassar yyyy
+            return v;
+        }
+
+        // Aplicando máscaras
+        const cpfInput = document.getElementById("cpf");
+        const celularInput = document.getElementById("celular");
+        const dataInput = document.getElementById("data_nascimento");
+
+        aplicarMascara(cpfInput, mascaraCPF);
+        aplicarMascara(celularInput, mascaraCelular);
+        aplicarMascara(dataInput, mascaraData);
+
+        // Lógica de envio do formulário
+        const form = document.getElementById('cadastro-form');
+        const qrcodeContainer = document.getElementById('qrcode-container');
+        const qrcodeImg = document.getElementById('qrcode-img');
+        const errorMsg = document.getElementById('error-msg');
+        const statusMsg = document.getElementById('status-msg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            errorMsg.classList.add('hidden');
+            qrcodeContainer.classList.add('hidden');
+
+            const dataNascimentoValue = dataInput.value;
+            const dataParts = dataNascimentoValue.split('/');
+            const dia = parseInt(dataParts[0], 10);
+            const mes = parseInt(dataParts[1], 10);
+            const ano = parseInt(dataParts[2], 10);
+
+            // Validação de Idade (Frontend)
+            const dataNascimentoObj = new Date(ano, mes - 1, dia);
+            const hoje = new Date();
+            const idadeMinima = 15;
+            const dataLimite = new Date(hoje.getFullYear() - idadeMinima, hoje.getMonth(), hoje.getDate());
+
+            if (dataNascimentoObj > dataLimite) {
+                errorMsg.textContent = `Você precisa ter no mínimo ${idadeMinima} anos para se cadastrar.`;
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // Validação completa de CPF (Frontend)
+            const cpfNumeros = cpfInput.value.replace(/\D/g, '');
+            if (cpfNumeros.length !== 11) {
+                errorMsg.textContent = 'CPF deve conter 11 dígitos numéricos.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // Lógica de validação dos dígitos verificadores do CPF
+            function validarDigitosCPF(cpfStr) {
+                let sum = 0;
+                let remainder;
+
+                if (cpfStr == "00000000000" ||
+                    cpfStr == "11111111111" ||
+                    cpfStr == "22222222222" ||
+                    cpfStr == "33333333333" ||
+                    cpfStr == "44444444444" ||
+                    cpfStr == "55555555555" ||
+                    cpfStr == "66666666666" ||
+                    cpfStr == "77777777777" ||
+                    cpfStr == "88888888888" ||
+                    cpfStr == "99999999999") {
+                    return false;
+                }
+
+                for (let i = 1; i <= 9; i++) {
+                    sum = sum + parseInt(cpfStr.substring(i - 1, i)) * (11 - i);
+                }
+                remainder = (sum * 10) % 11;
+
+                if ((remainder == 10) || (remainder == 11)) {
+                    remainder = 0;
+                }
+                if (remainder != parseInt(cpfStr.substring(9, 10))) {
+                    return false;
+                }
+
+                sum = 0;
+                for (let i = 1; i <= 10; i++) {
+                    sum = sum + parseInt(cpfStr.substring(i - 1, i)) * (12 - i);
+                }
+                remainder = (sum * 10) % 11;
+
+                if ((remainder == 10) || (remainder == 11)) {
+                    remainder = 0;
+                }
+                if (remainder != parseInt(cpfStr.substring(10, 11))) {
+                    return false;
+                }
+                return true;
+            }
+
+            if (!validarDigitosCPF(cpfNumeros)) {
+                errorMsg.textContent = 'CPF inválido.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            const data = {
+                nome: document.getElementById('nome').value,
+                cpf: cpfNumeros,
+                celular: celularInput.value.replace(/\D/g, ''),
+                data_nascimento: `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`,
+            };
+
+            try {
+                const response = await fetch('/clientes/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                const cliente = await response.json();
+
+                if (response.status === 201) {
+                    statusMsg.textContent = 'Cadastro realizado com sucesso!';
+                } else if (response.status === 208) {
+                    const status = cliente.utilizado 
+                        ? `Este QR Code já foi utilizado em ${new Date(cliente.data_utilizacao).toLocaleString('pt-BR')}.`
+                        : 'Este QR Code ainda é válido.';
+                    statusMsg.textContent = `Você já está cadastrado! ${status}`;
+                } else {
+                    throw new Error(cliente.detail || 'Ocorreu um erro ao cadastrar.');
+                }
+                
+                qrcodeImg.src = `/qrcode/${cliente.qrcode_hash}`;
+                qrcodeContainer.classList.remove('hidden');
+                form.classList.add('hidden');
+
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
