@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const API_URL = 'https://4f4816236afa.ngrok-free.app'; // URL para a API
+    const API_URL = 'http://212.85.21.16:8123'; // URL da API em produção
 
     async function verificarStatusPromocao() {
         try {

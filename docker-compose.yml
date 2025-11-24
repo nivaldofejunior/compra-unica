@@ -8,11 +8,23 @@ services:
       POSTGRES_USER: pizzariauser
       POSTGRES_PASSWORD: pizzariapassword
       POSTGRES_DB: pizzariadb
-      TZ: America/Manaus # Define o fuso horário para Manaus (GMT-4)
+      TZ: America/Manaus
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    restart: always
+
+  api:
+    build: ./api
+    container_name: pizzaria_api
+    ports:
+      - "8123:8000"
+    volumes:
+      - ./api:/app
+    depends_on:
+      - db
+    restart: always
 
 volumes:
   postgres_data:

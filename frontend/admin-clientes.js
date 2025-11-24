@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const modalDetails = document.getElementById('modal-client-details');
     const closeModalBtn = document.querySelector('.close-btn');
 
-    const API_BASE_URL = 'https://4f4816236afa.ngrok-free.app'; // Substituir pela URL do ngrok ou domínio
+    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
     let currentPage = 1;
     const itemsPerPage = 10;
     let searchTimeout;

@@ -11,8 +11,8 @@ from datetime import datetime
 import pytz
 from typing import Optional
 
-from . import models, schemas, crud
-from .database import engine, get_db
+import models, schemas, crud
+from database import engine, get_db
 
 # Cria as tabelas no banco de dados
 models.Base.metadata.create_all(bind=engine)

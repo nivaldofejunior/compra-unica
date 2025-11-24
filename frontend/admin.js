@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dataLimitePromocaoInput = document.getElementById('data_limite_promocao');
     const messageContainer = document.getElementById('message-container');
 
-    const API_BASE_URL = 'https://4f4816236afa.ngrok-free.app' // Substituir pela URL do ngrok ou domínio
+    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
 
     async function showMessage(message, type) {
         messageContainer.textContent = message;

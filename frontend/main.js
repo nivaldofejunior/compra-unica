@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     aplicarMascara(celularInput, mascaraCelular);
     aplicarMascara(dataInput, mascaraData);
 
-    const API_BASE_URL = 'https://4f4816236afa.ngrok-free.app'; // Ajuste para a URL da API em produção
+    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
 
     async function loadPromotionInfo() {
         try {
