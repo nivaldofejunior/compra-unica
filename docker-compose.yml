@@ -1,14 +1,12 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:13
     container_name: pizzaria_db
     environment:
-      POSTGRES_USER: pizzariauser
-      POSTGRES_PASSWORD: pizzariapassword
-      POSTGRES_DB: pizzariadb
-      TZ: America/Manaus
+      - POSTGRES_USER=pizzariauser
+      - POSTGRES_PASSWORD=pizzariapassword
+      - POSTGRES_DB=pizzariadb
+      - TZ=America/Manaus
     ports:
       - "5433:5432"
     volumes:
@@ -18,6 +16,8 @@ services:
   api:
     build: ./api
     container_name: pizzaria_api
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    working_dir: /app/
     ports:
       - "8123:8000"
     volumes:
