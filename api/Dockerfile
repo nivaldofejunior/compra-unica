@@ -16,4 +16,4 @@ EXPOSE 8000
 
 # Comando para executar a aplicação quando o container iniciar
 # Garante que o uvicorn estará acessível de fora do container
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
