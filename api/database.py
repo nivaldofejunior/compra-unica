@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://pizzariauser:pizzariapassword@localhost/pizzariadb")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://pizzariauser:pizzariapassword@db/pizzariadb")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
