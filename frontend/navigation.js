@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('adminLoggedIn');
-            window.location.href = 'admin-login.html';
+            window.location.href = '/admin-login';
         });
     }
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Verifica se o admin está logado
     if (!sessionStorage.getItem('adminLoggedIn')) {
-        window.location.href = 'admin-login.html';
+        window.location.href = '/admin-login';
     }
 
     // Define o link ativo ao carregar a página

@@ -111,7 +111,7 @@
 
                     if (response.ok) {
                         sessionStorage.setItem('adminLoggedIn', 'true'); // Define o status de login
-                        window.location.href = 'admin.html'; // Redireciona para a página de administração
+                        window.location.href = '/admin'; // Redireciona para a página de administração
                     } else {
                         const errorData = await response.json();
                         loginErrorMsg.textContent = errorData.detail || 'Senha incorreta.';
