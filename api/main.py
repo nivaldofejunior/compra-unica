@@ -163,4 +163,3 @@ def validar_qrcode(qrcode_hash: str, db: Session = Depends(get_db)):
 
 # --- Montagem de Arquivos Estáticos ---
 # Esta deve ser a última parte da configuração do app.
-app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
