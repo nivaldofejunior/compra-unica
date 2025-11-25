@@ -26,5 +26,12 @@ services:
       - db
     restart: always
 
+  frontend:
+    build: ./frontend
+    container_name: pizzaria_frontend
+    ports:
+      - "8080:80"
+    restart: always
+
 volumes:
   postgres_data:
