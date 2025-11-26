@@ -78,6 +78,20 @@ button:hover {
     background-color: #4cae4c;
 }
 
+.btn-danger {
+    background-color: #d9534f; /* Vermelho perigo */
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha em telas pequenas */
+    gap: 1rem; /* Espaçamento entre os botões */
+}
+
 .hidden {
     display: none;
 }
