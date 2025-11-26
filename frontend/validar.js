@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContainer = document.getElementById('result-container');
     const backToAdminBtn = document.getElementById('back-to-admin-btn');
     
-    const API_URL = ''; // URL Relativa para a API
     let scanning = false;
     let currentStream = null; // Para armazenar a stream da câmera
 
@@ -64,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videoContainer.classList.add('hidden'); // Esconde a área do vídeo
 
         try {
-            const response = await fetch(`${API_URL}/validar/${hash}`, {
+            const response = await fetch(`/api/validar/${hash}`, {
                 method: 'POST',
             });
 
