@@ -88,8 +88,6 @@
             const passwordInput = document.getElementById('password');
             const loginErrorMsg = document.getElementById('login-error-msg');
 
-            const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
-
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 loginErrorMsg.style.display = 'none';
@@ -101,7 +99,7 @@
                     formBody.append('username', 'admin'); // O FastAPI espera um username, mas não o usamos para a senha única.
                     formBody.append('password', password);
 
-                    const response = await fetch(`${API_BASE_URL}/admin/login/`, {
+                    const response = await fetch(`/api/admin/login/`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
