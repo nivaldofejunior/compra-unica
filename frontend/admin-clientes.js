@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const modalDetails = document.getElementById('modal-client-details');
     const closeModalBtn = document.querySelector('.close-btn');
 
-    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
     let currentPage = 1;
     const itemsPerPage = 10;
     let searchTimeout;
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchTotalClientes() {
         try {
-            const response = await fetch(`${API_BASE_URL}/admin/clientes/total/`);
+            const response = await fetch(`/api/admin/clientes/total/`);
             if (!response.ok) {
                 throw new Error('Erro ao buscar total de clientes.');
             }
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchClientes(page, searchTerm = '') {
         try {
             const skip = (page - 1) * itemsPerPage;
-            let url = `${API_BASE_URL}/admin/clientes/?skip=${skip}&limit=${itemsPerPage}`;
+            let url = `/api/admin/clientes/?skip=${skip}&limit=${itemsPerPage}`;
             if (searchTerm) {
                 url += `&search=${searchTerm}`; // Adicionar um endpoint de busca no backend
             }
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     resetClientesBtn.addEventListener('click', async () => {
         if (confirm('Tem certeza que deseja resetar o status de "utilizado" para TODOS os clientes? Esta ação é irreversível.')) {
             try {
-                const response = await fetch(`${API_BASE_URL}/admin/resetar-utilizacao/`, {
+                const response = await fetch(`/api/admin/resetar-utilizacao/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                 });

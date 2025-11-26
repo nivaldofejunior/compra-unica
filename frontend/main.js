@@ -17,11 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     aplicarMascara(celularInput, mascaraCelular);
     aplicarMascara(dataInput, mascaraData);
 
-    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
-
     async function loadPromotionInfo() {
         try {
-            const response = await fetch(`${API_BASE_URL}/promocao-info/`);
+            const response = await fetch(`/api/promocao-info/`);
             if (!response.ok) {
                 throw new Error('Erro ao carregar informações da promoção.');
             }
@@ -132,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const response = await fetch(`${API_BASE_URL}/clientes/`, {
+            const response = await fetch(`/api/clientes/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
@@ -156,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error(cliente.detail || 'Ocorreu um erro ao cadastrar.');
             }
             
-            qrcodeImg.src = `${API_BASE_URL}/qrcode/${cliente.qrcode_hash}`;
+            qrcodeImg.src = `/api/qrcode/${cliente.qrcode_hash}`;
             qrcodeContainer.classList.remove('hidden');
             form.classList.add('hidden');
 

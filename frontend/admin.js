@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dataLimitePromocaoInput = document.getElementById('data_limite_promocao');
     const messageContainer = document.getElementById('message-container');
 
-    const API_BASE_URL = 'http://212.85.21.16:8123'; // URL da API em produção
-
     async function showMessage(message, type) {
         messageContainer.textContent = message;
         messageContainer.className = '';
@@ -20,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchConfiguracao() {
         try {
-            const response = await fetch(`${API_BASE_URL}/configuracao/`);
+            const response = await fetch(`/api/configuracao/`);
             if (!response.ok) {
                 throw new Error('Erro ao buscar configurações.');
             }
@@ -59,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/configuracao/${configId}`, {
+            const response = await fetch(`/api/configuracao/${configId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ titulo_promocao, limite_clientes, data_limite_promocao }),
