@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const modal = document.getElementById('client-modal');
     const modalDetails = document.getElementById('modal-client-details');
     const closeModalBtn = document.querySelector('.close-btn');
+   const deleteAllClientesBtn = document.getElementById('delete-all-clientes-btn');
 
     let currentPage = 1;
     const itemsPerPage = 10;
@@ -142,6 +143,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+
+   deleteAllClientesBtn.addEventListener('click', async () => {
+       if (confirm('ATENÇÃO! Tem certeza que deseja deletar TODOS os clientes? Esta ação é PERMANENTE e NÃO PODE ser desfeita.')) {
+           try {
+               const response = await fetch(`/api/admin/clientes/delete-all/`, {
+                   method: 'DELETE',
+               });
+
+               if (!response.ok) {
+                   const errorData = await response.json();
+                   throw new Error(errorData.detail || 'Erro ao deletar clientes.');
+               }
+
+               alert('Todos os clientes foram deletados com sucesso!');
+               fetchClientes(1); // Recarrega a lista de clientes (que estará vazia)
+           } catch (error) {
+               console.error('Erro ao deletar todos os clientes:', error);
+               alert('Erro ao deletar clientes: ' + error.message);
+           }
+       }
+   });
 
     closeModalBtn.addEventListener('click', () => {
         modal.style.display = 'none';

@@ -62,7 +62,10 @@ def update_current_configuracao(config_id: uuid.UUID, config: schemas.Configurac
 def resetar_utilizacao(db: Session = Depends(get_db)):
     return crud.resetar_clientes_utilizados(db)
 
-@app.get("/admin/clientes/", response_model=list[schemas.Cliente])
+@app.delete("/admin/clientes/delete-all/", status_code=status.HTTP_200_OK)
+def deletar_todos_os_clientes(db: Session = Depends(get_db)):
+    return crud.delete_all_clientes(db)
+
 @app.get("/admin/clientes/", response_model=list[schemas.Cliente])
 def listar_clientes(skip: int = 0, limit: int = 100, search: Optional[str] = None, db: Session = Depends(get_db)):
     clientes = crud.get_clientes(db, skip=skip, limit=limit, search=search)

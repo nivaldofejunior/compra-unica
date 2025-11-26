@@ -113,3 +113,12 @@ def get_clientes(db: Session, skip: int = 0, limit: int = 100, search: str = "")
             )
         )
     return query.offset(skip).limit(limit).all()
+
+def delete_all_clientes(db: Session):
+    try:
+        db.query(models.Cliente).delete()
+        db.commit()
+        return {"message": "Todos os clientes foram deletados com sucesso."}
+    except Exception as e:
+        db.rollback()
+        raise e
