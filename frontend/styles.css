@@ -80,10 +80,14 @@ button:hover {
 
 .btn-danger {
     background-color: #d9534f; /* Vermelho perigo */
+    margin-left: 5px;
+    margin-bottom: 10px;
 }
 
 .btn-danger:hover {
+    margin-bottom: 10px;
     background-color: #c9302c;
+    margin-left: 5px;
 }
 
 .admin-buttons {
@@ -178,7 +182,7 @@ button:hover {
 }
 
 .admin-layout .main-content {
-    margin-left: 250px;
+    margin-left: 265px;
     padding: 2rem;
     width: calc(100% - 250px);
     transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
